@@ -1,0 +1,35 @@
+/* Parts =
+  1. Input Handling
+  2. Sudoku Solver Aspect
+  3. Final Output and Execution
+
+This is the Sudoku Solver Aspect
+
+Be sure to push your assigned part so we can merge it with main! Thats it!
+
+*/
+
+/* Solve the Sudoku puzzle using backtracking */
+int solve_sudoku(int i, int j)
+{
+    if (i == 9)
+    {
+        i = 0;
+        if (++j == 9)
+            return 1; // Sudoku solved successfully
+    }
+    if (known[i][j])
+        return solve_sudoku(i + 1, j);
+
+    for (int n = 1; n <= 9; n++)
+    {
+        if (!(rows[i] & bits[n]) && !(cols[j] & bits[n]) && !(squares[square(i, j)] & bits[n]))
+        {
+            set_cell(i, j, n);
+            if (solve_sudoku(i + 1, j))
+                return 1; // Solution found
+            clear_cell(i, j);
+        }
+    }
+    return 0; // No solution found
+}
